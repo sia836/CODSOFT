@@ -1,0 +1,12 @@
+import pandas as pd
+data = {'user_id': [1, 1, 2, 2, 3, 3], 'product_id': [101, 102, 102, 103, 101, 103], 'rating': [5, 4, 4, 5, 3, 4]}
+df = pd.DataFrame(data)
+similarity = {user: sum(df[df['user_id'] == user]['rating']) for user in df['user_id'].unique()}
+
+def recommend_products(user_id):
+    similar_users = [u for u in similarity.keys() if u != user_id]
+    recommendations = df[df['user_id'].isin(similar_users)]['product_id'].value_counts().index.tolist()
+    return recommendations
+# Example:
+user_id = 1
+print(f"Recommended products for user {user_id}: {recommend_products(user_id)}")
